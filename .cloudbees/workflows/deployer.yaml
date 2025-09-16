@@ -13,29 +13,23 @@ on:
         required: true
 
 jobs:
-  qa-python-hello-World-test-docker-artifact-2:
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-2'].deploy }}
+  qa-python-hello-World-cbpautomation_python-hello-world-docker:
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbpautomation/python-hello-world-docker'].deploy }}
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-2'].id }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbpautomation/python-hello-world-docker'].id }}
       environment: ${{ inputs.environment }}
-  qa-python-hello-World-test-docker-artifact-1:
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-1'].deploy }}
+  qa-python-hello-World-cbp-test-manual_qa-python-hello-world:
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbp-test-manual/qa-python-hello-world'].deploy }}
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-1'].id }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbp-test-manual/qa-python-hello-world'].id }}
       environment: ${{ inputs.environment }}
-  qa-python-hello-World-qa-python-helloworld:
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['qa-python-helloworld'].deploy }}
+  qa-python-hello-World-cbp-test-manual_qa-python-hello-World:
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbp-test-manual/qa-python-hello-World'].deploy }}
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['qa-python-helloworld'].id }}
-      environment: ${{ inputs.environment }}
-  qa-python-hello-World-index_docker_io_cbpautomation_python-hello-world-docker:
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['index.docker.io/cbpautomation/python-hello-world-docker'].deploy }}
-    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
-    with:
-      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['index.docker.io/cbpautomation/python-hello-world-docker'].id }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbp-test-manual/qa-python-hello-World'].id }}
       environment: ${{ inputs.environment }}
   qa-python-hello-World-ghcr_io_cbp-test-qa-automation_qa-python-hello-world:
     if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['ghcr.io/cbp-test-qa-automation/qa-python-hello-world'].deploy }}
@@ -43,15 +37,27 @@ jobs:
     with:
       artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['ghcr.io/cbp-test-qa-automation/qa-python-hello-world'].id }}
       environment: ${{ inputs.environment }}
-  qa-python-hello-World-cbpautomation_python-hello-world-docker:
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbpautomation/python-hello-world-docker'].deploy }}
+  qa-python-hello-World-index_docker_io_cbpautomation_python-hello-world-docker:
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['index.docker.io/cbpautomation/python-hello-world-docker'].deploy }}
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbpautomation/python-hello-world-docker'].id }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['index.docker.io/cbpautomation/python-hello-world-docker'].id }}
       environment: ${{ inputs.environment }}
-  qa-python-hello-World-cbp-test-manual_qa-python-hello-World:
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbp-test-manual/qa-python-hello-World'].deploy }}
+  qa-python-hello-World-qa-python-helloworld:
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['qa-python-helloworld'].deploy }}
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbp-test-manual/qa-python-hello-World'].id }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['qa-python-helloworld'].id }}
+      environment: ${{ inputs.environment }}
+  qa-python-hello-World-test-docker-artifact-1:
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-1'].deploy }}
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-1'].id }}
+      environment: ${{ inputs.environment }}
+  qa-python-hello-World-test-docker-artifact-2:
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-2'].deploy }}
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['test-docker-artifact-2'].id }}
       environment: ${{ inputs.environment }}
