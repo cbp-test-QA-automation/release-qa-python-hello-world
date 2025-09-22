@@ -22,4 +22,4 @@ jobs:
     uses: ./.cloudbees/workflows/deployer.yaml
     with:
       manifest: ${{ inputs.manifest }}
-      environment: ${{ cloudbees.job.environment }}
+      environment: QA
