@@ -19,7 +19,7 @@ metadata:
         - deploy-env2
     - name: env3
       jobs:
-        - deploy-env2
+        - deploy-env3
 
 jobs:
   deploy-env1:
