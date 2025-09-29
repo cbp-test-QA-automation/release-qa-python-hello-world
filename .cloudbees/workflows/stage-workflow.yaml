@@ -16,7 +16,7 @@ metadata:
     - name: preprod
       jobs:
         - dev-stage
-    - name: QA-
+    - name: QA
       jobs:
         - qa-stage
     - name: PROD
