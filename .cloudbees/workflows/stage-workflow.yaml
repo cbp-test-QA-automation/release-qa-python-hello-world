@@ -13,18 +13,18 @@ on:
           for the expected format
 metadata:
   stages/v1alpha1:
-    - name: QA
-      jobs:
-        - stage1
     - name: preprod
       jobs:
-        - stage2
+        - dev-stage
+    - name: QA-
+      jobs:
+        - qa-stage
     - name: PROD
       jobs:
-        - stage3
+        - prod-stage
     - name: Final
       jobs:
-        - Deploy
+        - stage1
 jobs:
   stage1:
     environment: QA
@@ -32,28 +32,21 @@ jobs:
       - run: echo "Stage 1"
         uses: docker://golang:1.20.3-alpine3.17
         name: Deploy
-        
-  stage2:
-    needs: stage1
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World'].deploy }}
+    needs: prod-stage
+  dev-stage:
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: "${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
-      environment: QA
-      
-  stage3:
-    needs: stage2
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World'].deploy }}
+      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      environment: DEV
+  qa-stage:
+    needs: dev-stage
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: "${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
+      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
       environment: QA
-      
-  Deploy:
-    needs:
-      - stage3
-    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World'].deploy }}
+  prod-stage:
+    needs: qa-stage
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: "${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
-      environment: QA
+      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      environment: PROD
