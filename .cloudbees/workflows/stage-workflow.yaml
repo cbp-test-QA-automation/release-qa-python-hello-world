@@ -51,7 +51,8 @@ jobs:
   Deploy:
     needs:
       - stage3
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World'].deploy }}
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: " ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
+      manifest: "${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
       environment: QA
