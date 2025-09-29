@@ -27,12 +27,11 @@ metadata:
         - stage1
 jobs:
   stage1:
-    environment: QA
+    needs: prod-stage
     steps:
-      - run: echo "Stage 1"
+      - run: echo "Final stage"
         uses: docker://golang:1.20.3-alpine3.17
         name: Deploy
-    needs: prod-stage
   dev-stage:
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
