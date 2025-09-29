@@ -32,22 +32,23 @@ jobs:
       - run: echo "Stage 1"
         uses: docker://golang:1.20.3-alpine3.17
         name: Deploy
+        
   stage2:
     needs: stage1
-    environment: QA
-    steps:
-      - run: echo "Stage 2"
-        uses: docker://golang:1.20.3-alpine3.17
-        name: Deploy
-        shell: sh
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World'].deploy }}
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      manifest: "${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
+      environment: QA
+      
   stage3:
     needs: stage2
-    environment: QA
-    steps:
-      - run: echo "PROD3"
-        uses: docker://golang:1.20.3-alpine3.17
-        name: Deploy
-        shell: sh
+    if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World'].deploy }}
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      manifest: "${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
+      environment: QA
+      
   Deploy:
     needs:
       - stage3
