@@ -22,6 +22,9 @@ metadata:
     - name: PROD
       jobs:
         - stage3
+    - name: Final
+      jobs:
+        - Deploy
 jobs:
   stage1:
     environment: QA
@@ -38,11 +41,17 @@ jobs:
         name: Deploy
         shell: sh
   stage3:
-    needs:
-      - stage2
+    needs: stage2
     environment: QA
     steps:
       - run: echo "PROD3"
         uses: docker://golang:1.20.3-alpine3.17
         name: Deploy
         shell: sh
+  Deploy:
+    needs:
+      - stage3
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      manifest: " ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}"
+      environment: QA
