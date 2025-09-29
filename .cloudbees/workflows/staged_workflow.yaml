@@ -30,6 +30,7 @@ jobs:
         run: |
           echo Deploying...
   deploy-env2:
+    needs: deploy-env1
     steps:
       - name: Deploy
         uses: docker://golang:1.20.3-alpine3.17
@@ -37,6 +38,7 @@ jobs:
         run: |
           echo Deploying...
   deploy-env3:
+    needs: deploy-env2
     steps:
       - name: Deploy
         uses: docker://golang:1.20.3-alpine3.17
