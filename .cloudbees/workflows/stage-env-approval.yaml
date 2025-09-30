@@ -1,6 +1,6 @@
 apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
-name: stage-manual-approval
+name: stage-env-approval
 on:
   workflow_dispatch:
     inputs:
@@ -17,36 +17,14 @@ metadata:
       jobs:
         - Deploy-QA
         - qa-approval
-    - name: PROD
-      jobs:
-        - Deploy-prod
-        - prod-approval
 jobs:
   qa-approval:
     needs: Deploy-QA
-    timeout-minutes: 4320
-    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
-    with:
-      disallowLaunchByUser: false
-      notifyAllEligibleUsers: false
-      approvers: 1c132fd0-9d10-11ef-96e6-42010a83ae68,0cb88e48-03d3-11eb-9d67-42010a83ae35
-  Deploy-prod:
-    needs: qa-approval
-    environment: PROD
+    environment: approval_QA
     steps:
-      - run: echo "Deploying to prod"
+      - run: 'echo "Staged approval based on ENV: ${{ jobs.environment }}"'
         uses: docker://golang:1.20.3-alpine3.17
-        name: Say hello
-        shell: sh
-  prod-approval:
-    needs: Deploy-prod
-    timeout-minutes: 4320
-    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
-    with:
-      instructions: Approve this job once PROD deployment is successfull
-      disallowLaunchByUser: false
-      notifyAllEligibleUsers: false
-      approvers: 1c132fd0-9d10-11ef-96e6-42010a83ae68,0cb88e48-03d3-11eb-9d67-42010a83ae35
+        name: Environment based approval
   Deploy-QA:
     environment: QA
     steps:
