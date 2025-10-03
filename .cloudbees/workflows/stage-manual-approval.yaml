@@ -13,6 +13,10 @@ on:
           for the expected format
 metadata:
   stages/v1alpha1:
+    - name: Stage
+      jobs:
+        - job
+        - start-flow
     - name: QA
       jobs:
         - Deploy-QA
@@ -53,3 +57,18 @@ jobs:
       - run: echo "Deploying.... to ${{ job.environment }}"
         uses: docker://golang:1.20.3-alpine3.17
         name: Deploy
+    needs: start-flow
+  job:
+    steps:
+      - name: Say hello
+        uses: docker://golang:1.20.3-alpine3.17
+        shell: sh
+        run: echo "hello world"
+  start-flow:
+    needs:
+      - job
+    timeout-minutes: 4320
+    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
+    with:
+      disallowLaunchByUser: false
+      notifyAllEligibleUsers: false
