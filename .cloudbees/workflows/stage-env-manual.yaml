@@ -26,7 +26,7 @@ jobs:
     with:
       disallowLaunchByUser: false
       notifyAllEligibleUsers: false
-      approvers: 1c132fd0-9d10-11ef-96e6-42010a83ae68
+      approvers: 1c132fd0-9d10-11ef-96e6-42010a83ae68,0a808e26-f884-11ec-aa0a-42010a83ae55
   job:
     needs:
       - QA
