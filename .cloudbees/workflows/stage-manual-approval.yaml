@@ -25,6 +25,9 @@ metadata:
       jobs:
         - Deploy-prod
         - prod-approval
+    - name: Post-Release
+      jobs:
+        - close
 jobs:
   qa-approval:
     needs: Deploy-QA
@@ -65,10 +68,18 @@ jobs:
         shell: sh
         run: echo "hello world"
   start-flow:
-    needs:
-      - job
+    needs: job
     timeout-minutes: 4320
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       disallowLaunchByUser: false
       notifyAllEligibleUsers: false
+  close:
+    needs:
+      - prod-approval
+    timeout-minutes: 4320
+    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
+    with:
+      disallowLaunchByUser: false
+      notifyAllEligibleUsers: false
+      approvers: cd-ro test
