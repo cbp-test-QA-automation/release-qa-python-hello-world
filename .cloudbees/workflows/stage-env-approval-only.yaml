@@ -20,7 +20,6 @@ metadata:
     - name: QA
       jobs:
         - Deploy-QA
-        - qa-approval-just-echo
     - name: PROD
       jobs:
         - Deploy-prod
@@ -29,15 +28,8 @@ metadata:
       jobs:
         - close
 jobs:
-  qa-approval-just-echo:
-    needs: Deploy-QA
-    steps:
-      - run: echo "Regular job before env approval"
-        uses: docker://golang:1.20.3-alpine3.17
-        name: Say hello
-        shell: sh
   Deploy-prod:
-    needs: qa-approval-just-echo
+    needs: Deploy-QA
     environment: PROD
     steps:
       - run: echo "Deploying to prod"
@@ -54,31 +46,30 @@ jobs:
       notifyAllEligibleUsers: false
       approvers: 1c132fd0-9d10-11ef-96e6-42010a83ae68,0cb88e48-03d3-11eb-9d67-42010a83ae35
   Deploy-QA:
-    environment: QA
+    needs: start-flow
+    environment: approval_QA
     steps:
       - run: echo "Deploying.... to ${{ job.environment }}"
         uses: docker://golang:1.20.3-alpine3.17
         name: Deploy
-    needs: start-flow
   job:
     steps:
       - name: Say hello
         uses: docker://golang:1.20.3-alpine3.17
         shell: sh
         run: echo "hello world"
-  start-flow:
-    needs: job
-    timeout-minutes: 4320
-    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
-    with:
-      disallowLaunchByUser: false
-      notifyAllEligibleUsers: false
   close:
-    needs:
-      - prod-approval
+    needs: prod-approval
     timeout-minutes: 4320
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       disallowLaunchByUser: false
       notifyAllEligibleUsers: false
       approvers: cd-ro test
+  start-flow:
+    needs: job
+    steps:
+      - run: echo "Regular job before env approval"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Say hello
+        shell: sh
