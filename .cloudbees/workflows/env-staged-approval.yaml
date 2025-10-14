@@ -17,6 +17,7 @@ metadata:
       jobs:
         - env-approval
 jobs:
+  timeout-minutes: 3
   env-approval:
     environment: approval_QA
     steps:
