@@ -31,7 +31,7 @@ metadata:
 jobs:
   qa-approval:
     needs: Deploy-QA
-    timeout-minutes: 4320
+    timeout-minutes: 3
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       disallowLaunchByUser: false
@@ -47,7 +47,7 @@ jobs:
         shell: sh
   prod-approval:
     needs: Deploy-prod
-    timeout-minutes: 4320
+    timeout-minutes: 3
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       instructions: Approve this job once PROD deployment is successfull
@@ -69,7 +69,7 @@ jobs:
         run: echo "hello world"
   start-flow:
     needs: job
-    timeout-minutes: 4320
+    timeout-minutes: 3
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       disallowLaunchByUser: false
@@ -77,7 +77,7 @@ jobs:
   close:
     needs:
       - prod-approval
-    timeout-minutes: 4320
+    timeout-minutes: 3
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       disallowLaunchByUser: false
