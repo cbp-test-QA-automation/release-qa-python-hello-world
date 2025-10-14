@@ -29,7 +29,7 @@ jobs:
   Man_Check:
     needs:
       - Env_Approval_Check
-    timeout-minutes: 4320
+    timeout-minutes: 3
     delegates: cloudbees-io/manual-approval/custom-job.yml@v1
     with:
       disallowLaunchByUser: false
