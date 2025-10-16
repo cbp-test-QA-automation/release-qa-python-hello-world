@@ -20,31 +20,7 @@ metadata:
     - name: QA
       jobs:
         - Deploy-QA
-    - name: PROD
-      jobs:
-        - Deploy-prod
-        - prod-approval
-    - name: Post-Release
-      jobs:
-        - close
 jobs:
-  Deploy-prod:
-    needs: Deploy-QA
-    environment: PROD
-    steps:
-      - run: echo "Deploying to prod"
-        uses: docker://golang:1.20.3-alpine3.17
-        name: Say hello
-        shell: sh
-  prod-approval:
-    needs: Deploy-prod
-    timeout-minutes: 3
-    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
-    with:
-      instructions: Approve this job once PROD deployment is successfull
-      disallowLaunchByUser: false
-      notifyAllEligibleUsers: false
-      approvers: 1c132fd0-9d10-11ef-96e6-42010a83ae68,0cb88e48-03d3-11eb-9d67-42010a83ae35
   Deploy-QA:
     needs: start-flow
     environment: approval_QA
@@ -58,14 +34,6 @@ jobs:
         uses: docker://golang:1.20.3-alpine3.17
         shell: sh
         run: echo "hello world"
-  close:
-    needs: prod-approval
-    timeout-minutes: 3
-    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
-    with:
-      disallowLaunchByUser: false
-      notifyAllEligibleUsers: false
-      approvers: cd-ro test
   start-flow:
     needs: job
     steps:
