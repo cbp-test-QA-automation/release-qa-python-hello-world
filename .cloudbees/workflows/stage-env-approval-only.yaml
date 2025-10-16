@@ -17,8 +17,6 @@ metadata:
       jobs:
         - job
         - start-flow
-    - name: QA
-      jobs:
         - Deploy-QA
 jobs:
   Deploy-QA:
