@@ -9,7 +9,6 @@ on:
         type: string
         required: true
       
-
 jobs:
   app1:
     if: ${{ fromJSON(inputs.manifest)['qa-python-hello-World'].deploy }}
