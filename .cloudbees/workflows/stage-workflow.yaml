@@ -35,17 +35,17 @@ jobs:
   dev-stage:
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbpautomation/python-hello-world-docker'].id }}
       environment: DEV
   qa-stage:
     needs: dev-stage
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbpautomation/python-hello-world-docker'].id }}
       environment: QA
   prod-stage:
     needs: qa-stage
     uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['qa-python-hello-World']['cbpautomation/python-hello-world-docker'].id }}
       environment: PROD
