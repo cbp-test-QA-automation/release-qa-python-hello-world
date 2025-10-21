@@ -12,8 +12,9 @@ on:
 
 jobs:
   app1:
-    if: ${{ fromJSON(inputs.manifest)['prod-python-helloworld'].deploy }}
-    uses: cbp-test-prod/prod-python-helloworld/.cloudbees/workflows/deploy.yaml
+    
+    if: ${{ fromJSON(inputs.manifest)['preprod-python-hello-World']['cbpautomation/python-hello-world-docker'].deploy }}
+    uses: cbp-test-prod/preprod-python-helloworld/.cloudbees/workflows/deploy.yaml
     with:
-      manifest: ${{ toJSON(fromJSON(inputs.manifest)['prod-python-helloworld']) }}
+      artifact-id: ${{ fromJSON(inputs.manifest)['preprod-python-hello-World']['cbpautomation/python-hello-world-docker'].id }}
       environment: PREPROD

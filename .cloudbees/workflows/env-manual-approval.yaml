@@ -1,0 +1,36 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: env-manual-approval
+on:
+  workflow_dispatch:
+    inputs:
+      manifest:
+        type: string
+        required: true
+        description: This is a system-generated parameter and is required for use in
+          application releases. Refer to
+          https://docs.cloudbees.com/docs/cloudbees-platform/latest/applications/releases#manifest
+          for the expected format
+metadata:
+  stages/v1alpha1:
+    - name: Environment Approval
+      jobs:
+        - Env_Approval_Check
+    - name: Manual Approval
+      jobs:
+        - Man_Check
+jobs:
+  Env_Approval_Check:
+    environment: approval_QA
+    steps:
+      - run: echo "Deploying.... to ${{ job.environment }}"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: step1
+  Man_Check:
+    needs:
+      - Env_Approval_Check
+    timeout-minutes: 3
+    delegates: cloudbees-io/manual-approval/custom-job.yml@v1
+    with:
+      disallowLaunchByUser: false
+      notifyAllEligibleUsers: false

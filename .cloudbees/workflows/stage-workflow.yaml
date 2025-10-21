@@ -1,0 +1,51 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: stage-workflow
+on:
+  workflow_dispatch:
+    inputs:
+      manifest:
+        type: string
+        required: true
+        description: This is a system-generated parameter and is required for use in
+          application releases. Refer to
+          https://docs.cloudbees.com/docs/cloudbees-platform/latest/applications/releases#manifest
+          for the expected format
+metadata:
+  stages/v1alpha1:
+    - name: DEV
+      jobs:
+        - dev-stage
+    - name: QA
+      jobs:
+        - qa-stage
+    - name: PROD
+      jobs:
+        - prod-stage
+    - name: Final
+      jobs:
+        - stage1
+jobs:
+  stage1:
+    needs: prod-stage
+    steps:
+      - run: echo "Final stage"
+        uses: docker://golang:1.20.3-alpine3.17
+        name: Deploy
+  dev-stage:
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      environment: DEV
+  qa-stage:
+    needs: dev-stage
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      environment: QA
+  prod-stage:
+    needs: qa-stage
+    uses: cbp-test-QA-automation/qa-python-hello-World/.cloudbees/workflows/deploy.yaml
+    with:
+      manifest: ${{ toJSON(fromJSON(inputs.manifest)['qa-python-hello-World']) }}
+      environment: PROD
