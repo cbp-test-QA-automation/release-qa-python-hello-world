@@ -21,6 +21,7 @@ metadata:
 jobs:
   Deploy-QA:
     needs: start-flow
+    timeout-minutes: 2
     environment: approval_QA
     steps:
       - run: echo "Deploying.... to ${{ job.environment }}"
